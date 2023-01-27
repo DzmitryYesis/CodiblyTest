@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
-function App() {
-  return (
-    <div>
-      Hello World!!!
-    </div>
-  );
-}
+import { MainPage } from 'components';
+
+const App = (): ReactElement => (
+  <div>
+    <MainPage />
+  </div>
+);
 
 export default App;
