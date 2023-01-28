@@ -1,4 +1,4 @@
-import { TResponseType } from 'api/types';
+import { TResponseType } from 'types';
 
 export const ProductsAPI = (url: string, method: string): Promise<TResponseType> =>
   fetch(url, {

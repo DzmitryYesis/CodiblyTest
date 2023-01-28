@@ -1,18 +1,24 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useEffect } from 'react';
 
-import { ProductsAPI, REQUEST_URL, TResponseDataType } from 'api';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { ProductsAPI, REQUEST_URL } from 'api';
+import { setDataFromServer } from 'store/reducer/dataFromServer';
+import { getDataFromServer } from 'store/selector';
 
 export const MainPage = (): ReactElement => {
-  const [state, setState] = useState<TResponseDataType[]>();
+  const dispatch = useDispatch();
+  const dataFromServer = useSelector(getDataFromServer);
+
   useEffect(() => {
     ProductsAPI(REQUEST_URL, 'GET').then(res => {
-      setState(res.data);
+      dispatch(setDataFromServer(res.data));
     });
   }, []);
 
   return (
     <div>
-      {state?.map(el => (
+      {dataFromServer.map(el => (
         <div key={el.id} style={{ background: el.color }}>
           <h1>{el.name}</h1>
           <p>{el.year}</p>

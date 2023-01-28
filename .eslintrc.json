@@ -24,6 +24,7 @@
     "@typescript-eslint"
   ],
   "rules": {
+    "no-param-reassign": 0,
     "no-shadow": "off",
     "no-alert": "error",
     "no-debugger": "error",

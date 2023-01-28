@@ -1,0 +1,1 @@
+export { getDataFromServer } from './dataFromServerSelector';
