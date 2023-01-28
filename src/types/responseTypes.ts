@@ -13,3 +13,7 @@ export type TResponseDataType = {
   color: string;
   pantone_value: string;
 };
+
+export type TFilterResponseType = {
+  data: TResponseDataType;
+};

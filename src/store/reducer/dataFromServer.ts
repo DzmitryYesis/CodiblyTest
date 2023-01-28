@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { TReducersDataFromServerType } from 'types';
+import { TReducersDataFromServerType, TResponseDataType } from 'types';
 
 const initialState: TReducersDataFromServerType = {
   data: [],
+  dataForDetail: {} as TResponseDataType,
+  filterData: {} as TResponseDataType,
 };
 
 const dataFromServer = createSlice({
@@ -13,9 +15,15 @@ const dataFromServer = createSlice({
     setDataFromServer(state, action) {
       state.data = action.payload;
     },
+    setDetailInfo(state, action) {
+      state.dataForDetail = action.payload;
+    },
+    setFilterData(state, action) {
+      state.filterData = action.payload;
+    },
   },
 });
 
-export const { setDataFromServer } = dataFromServer.actions;
+export const { setDataFromServer, setDetailInfo, setFilterData } = dataFromServer.actions;
 
 export default dataFromServer.reducer;
