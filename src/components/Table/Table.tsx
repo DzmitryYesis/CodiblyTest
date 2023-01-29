@@ -3,6 +3,8 @@ import React, { ReactElement } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useSelector } from 'react-redux';
 
+import classes from './Table.module.scss';
+
 import { Modal } from 'components/Modal';
 import { ElementInfo } from 'components/Table/ElementInfo/ElementInfo';
 import { TableRow } from 'components/Table/TableRow/TableRow';
@@ -18,7 +20,7 @@ export const Table = (): ReactElement => {
 
   return (
     <div>
-      <table>
+      <table className={classes.table}>
         <tbody>
           <tr>
             <th>Index</th>
@@ -33,7 +35,7 @@ export const Table = (): ReactElement => {
         </tbody>
       </table>
       {isModalOpen && (
-        <Modal backBtn>
+        <Modal>
           <ElementInfo element={detailInfo} />
         </Modal>
       )}

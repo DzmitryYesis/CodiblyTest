@@ -15,7 +15,10 @@ export const TableRow = ({ element }: TElementType): ReactElement => {
   };
 
   return (
-    <tr style={{ background: element.color }} onClick={onClickRowHandle}>
+    <tr
+      style={{ background: element.color, cursor: 'pointer' }}
+      onClick={onClickRowHandle}
+    >
       <td>{element.name}</td>
       <td>{element.year}</td>
       <td>{element.pantone_value}</td>

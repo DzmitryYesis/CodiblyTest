@@ -5,8 +5,11 @@ import { useDispatch } from 'react-redux';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useSearchParams } from 'react-router-dom';
 
+import classes from './MainPage.module.scss';
+
 import { ProductsAPI } from 'api';
 import { FilterAPI } from 'api/productsAPI';
+import { Button } from 'components/Button';
 import { Table } from 'components/Table/Table';
 import { setDataFromServer, setFilterData } from 'store/reducer/dataFromServer';
 
@@ -23,6 +26,7 @@ export const MainPage = (): ReactElement => {
   const browserPage = searchParams.get('page') || '1';
   /*  const [value, setValue] = useState<string>(); */
   const [page, setPage] = useState<number>(Number(browserPage));
+  const [isFocus, setIsFocus] = useState<boolean>(false);
 
   /* const pageParam = searchParams.get('page'); */
   const filterId = searchParams.get('id') || '';
@@ -41,6 +45,10 @@ export const MainPage = (): ReactElement => {
         dispatch(setDataFromServer(res.data));
       });
     }
+  };
+
+  const focusHandle = (): void => {
+    setIsFocus(!isFocus);
   };
 
   const nextPage = (): void => {
@@ -74,15 +82,36 @@ export const MainPage = (): ReactElement => {
   }, [page]);
 
   return (
-    <div>
-      <input value={filterId} onChange={filterHandle} />
+    <div className={classes.wrapper}>
+      <div className={classes.input_wrapper}>
+        <p className={classes.label}>ID:</p>
+        <input
+          placeholder={isFocus ? '' : 'Enter ID number'}
+          className={classes.filter_input}
+          value={filterId}
+          onChange={filterHandle}
+          onFocus={focusHandle}
+          onBlur={focusHandle}
+        />
+      </div>
       <Table />
-      <button type="button" disabled={page === NUMBER.ONE} onClick={previousPage}>
-        Previous
-      </button>
-      <button type="button" disabled={page === NUMBER.THREE} onClick={nextPage}>
-        Next
-      </button>
+      <div className={classes.button_group_wrapper}>
+        <Button
+          className={classes.button}
+          disabled={page === NUMBER.ONE}
+          onClick={previousPage}
+        >
+          Previous
+        </Button>
+        <h1>{page}</h1>
+        <Button
+          className={classes.button}
+          disabled={page === NUMBER.THREE}
+          onClick={nextPage}
+        >
+          Next
+        </Button>
+      </div>
     </div>
   );
 };
