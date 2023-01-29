@@ -1,54 +1,69 @@
 import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useSearchParams } from 'react-router-dom';
 
 import classes from './MainPage.module.scss';
 
-import { ProductsAPI } from 'api';
-import { FilterAPI } from 'api/productsAPI';
-import { Button } from 'components/Button';
-import { Table } from 'components/Table/Table';
+import { ProductsAPI, FilterAPI } from 'api';
+import { Button, ClientError, ServerError, FailedIcon, Modal, Table } from 'components';
 import { setDataFromServer, setFilterData } from 'store/reducer/dataFromServer';
+import {
+  setIsClientError,
+  setIsFocus,
+  setIsServerError,
+} from 'store/reducer/mainPageState';
+import { getIsClientError, getIsFocus, getIsServerError } from 'store/selector';
 
 const enum NUMBER {
   ONE = 1,
-  TWO = 2,
   THREE = 3,
+  TWO_HUNDRED = 200,
+  FOUR_ZERO_FOUR = 404,
 }
 
 export const MainPage = (): ReactElement => {
   const dispatch = useDispatch();
-  /* const filerData = useSelector(getFilterData); */
+
+  const isFocus = useSelector(getIsFocus);
+  const isClientError = useSelector(getIsClientError);
+  const isServerError = useSelector(getIsServerError);
+
   const [searchParams, setSearchParams] = useSearchParams();
   const browserPage = searchParams.get('page') || '1';
-  /*  const [value, setValue] = useState<string>(); */
-  const [page, setPage] = useState<number>(Number(browserPage));
-  const [isFocus, setIsFocus] = useState<boolean>(false);
-
-  /* const pageParam = searchParams.get('page'); */
   const filterId = searchParams.get('id') || '';
+
+  const [page, setPage] = useState<number>(Number(browserPage));
 
   const filterHandle = (e: ChangeEvent<HTMLInputElement>): void => {
     const id = e.target.value.replace(/[^\d]/g, '');
     if (id) {
       setSearchParams({ id });
       FilterAPI(id, 'GET').then(res => {
-        dispatch(setFilterData(res.data));
+        if (res.status === NUMBER.TWO_HUNDRED) {
+          dispatch(setFilterData(res.json.data));
+        } else if (res.status === NUMBER.FOUR_ZERO_FOUR) {
+          dispatch(setIsClientError(true));
+        } else {
+          dispatch(setIsServerError(true));
+        }
       });
     } else {
       setSearchParams({ page: page.toString(), per_page: '5' });
       ProductsAPI(page.toString(), '5', 'GET').then(res => {
         dispatch(setFilterData({}));
-        dispatch(setDataFromServer(res.data));
+        dispatch(setDataFromServer(res.json.data));
       });
     }
   };
 
-  const focusHandle = (): void => {
-    setIsFocus(!isFocus);
+  const onFocusHandle = (): void => {
+    dispatch(setIsFocus(true));
+  };
+  const onBlurHandle = (): void => {
+    dispatch(setIsFocus(false));
   };
 
   const nextPage = (): void => {
@@ -71,12 +86,12 @@ export const MainPage = (): ReactElement => {
     if (filterId) {
       setSearchParams({ id: filterId });
       FilterAPI(filterId, 'GET').then(res => {
-        dispatch(setFilterData(res.data));
+        dispatch(setFilterData(res.json.data));
       });
     } else {
       setSearchParams({ page: page.toString(), per_page: '5' });
       ProductsAPI(page.toString(), '5', 'GET').then(res => {
-        dispatch(setDataFromServer(res.data));
+        dispatch(setDataFromServer(res.json.data));
       });
     }
   }, [page]);
@@ -90,8 +105,8 @@ export const MainPage = (): ReactElement => {
           className={classes.filter_input}
           value={filterId}
           onChange={filterHandle}
-          onFocus={focusHandle}
-          onBlur={focusHandle}
+          onFocus={onFocusHandle}
+          onBlur={onBlurHandle}
         />
       </div>
       <Table />
@@ -112,6 +127,16 @@ export const MainPage = (): ReactElement => {
           Next
         </Button>
       </div>
+      {isClientError && (
+        <Modal Icon={FailedIcon} onCloseModal={() => dispatch(setIsClientError(false))}>
+          <ClientError id={filterId} />
+        </Modal>
+      )}
+      {isServerError && (
+        <Modal Icon={FailedIcon} onCloseModal={() => dispatch(setIsServerError(false))}>
+          <ServerError />
+        </Modal>
+      )}
     </div>
   );
 };

@@ -1,4 +1,9 @@
 export type TResponseType = {
+  json: TResponsePageType;
+  status: number;
+};
+
+export type TResponsePageType = {
   page: number;
   per_page: number;
   total: number;
@@ -15,5 +20,8 @@ export type TResponseDataType = {
 };
 
 export type TFilterResponseType = {
-  data: TResponseDataType;
+  json: {
+    data: TResponseDataType;
+  };
+  status: number;
 };

@@ -19,7 +19,9 @@ export const ElementInfo = ({ element }: TElementType): ReactElement => (
         <p className={classes.value}>{element.id}</p>
         <p className={classes.value}>{element.name}</p>
         <p className={classes.value}>{element.year}</p>
-        <p className={classes.value}>{element.color}</p>
+        <p className={classes.value} style={{ background: `${element.color}` }}>
+          {element.color}
+        </p>
         <p className={classes.value}>{element.pantone_value}</p>
       </div>
     </div>

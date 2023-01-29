@@ -1,6 +1,15 @@
-export type { TResponseDataType, TResponseType } from './responseTypes';
+export type {
+  TResponseDataType,
+  TResponseType,
+  TResponsePageType,
+  TFilterResponseType,
+} from './responseTypes';
 
-export type { TReducersDataFromServerType } from './reducersType';
+export type {
+  TReducersDataFromServerType,
+  TMainPageStateType,
+  TModalState,
+} from './reducersType';
 
 export type { TIconProps } from './iconTypes';
 

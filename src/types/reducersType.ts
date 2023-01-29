@@ -5,3 +5,13 @@ export type TReducersDataFromServerType = {
   dataForDetail: TResponseDataType;
   filterData: TResponseDataType;
 };
+
+export type TModalState = {
+  modalOpen: boolean;
+};
+
+export type TMainPageStateType = {
+  isClientError: boolean;
+  isServerError: boolean;
+  isFocus: boolean;
+};

@@ -3,14 +3,17 @@ import React, { ReactElement } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useSelector } from 'react-redux';
 
+import { ElementInfo } from './ElementInfo';
 import classes from './Table.module.scss';
+import { TableRow } from './TableRow';
 
-import { Modal } from 'components/Modal';
-import { ElementInfo } from 'components/Table/ElementInfo/ElementInfo';
-import { TableRow } from 'components/Table/TableRow/TableRow';
-import { getDataFromServer } from 'store/selector';
-import { getDetailInfo, getFilterData } from 'store/selector/dataFromServerSelector';
-import { getModalStatus } from 'store/selector/modalSelector';
+import { Modal } from 'components';
+import {
+  getDataFromServer,
+  getDetailInfo,
+  getFilterData,
+  getModalStatus,
+} from 'store/selector';
 
 export const Table = (): ReactElement => {
   const dataFromServer = useSelector(getDataFromServer);

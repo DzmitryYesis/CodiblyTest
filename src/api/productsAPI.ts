@@ -1,5 +1,4 @@
-import { TResponseType } from 'types';
-import { TFilterResponseType } from 'types/responseTypes';
+import { TResponseType, TFilterResponseType } from 'types';
 
 export const ProductsAPI = (
   page: string,
@@ -12,7 +11,10 @@ export const ProductsAPI = (
     headers: {
       'Content-Type': 'application/json',
     },
-  }).then((response: Response) => Promise.resolve(response.json()));
+  }).then((response: Response) => {
+    const { status } = response;
+    return Promise.resolve(response.json()).then(json => ({ json, status }));
+  });
 
 export const FilterAPI = (id: string, method: string): Promise<TFilterResponseType> =>
   fetch(`https://reqres.in/api/products?id=${id}`, {
@@ -21,4 +23,7 @@ export const FilterAPI = (id: string, method: string): Promise<TFilterResponseTy
     headers: {
       'Content-Type': 'application/json',
     },
-  }).then((response: Response) => Promise.resolve(response.json()));
+  }).then((response: Response) => {
+    const { status } = response;
+    return Promise.resolve(response.json()).then(json => ({ json, status }));
+  });
