@@ -25,4 +25,4 @@
 - #### unit-test
 - #### eslint prettier
 
-- ### [Result](https://dzmitryyesis.github.io/friday_project/)
+- ### [Result](https://dzmitryyesis.github.io/CodiblyTest)
